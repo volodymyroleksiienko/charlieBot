@@ -1,0 +1,18 @@
+<th:block xmlns:th="http://www.w3.org/1999/xhtml" th:fragment="adminDashboard">
+    <div class="container">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/allProducts"
+                   th:classappend="${tabName.equals('products')} ? 'active':''">Товари</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/allCategories"
+                   th:classappend="${tabName.equals('category')} ? 'active':''">Категорії</a>
+            </li>
+        </ul>
+    </div>
+</th:block>
+
+
+
+
