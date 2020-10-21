@@ -44,46 +44,25 @@ public class FillingOrderDetails implements InputMessageHandler {
 
         SendMessage replyToUser = null;
 
-        if (botState.equals(BotState.ASK_NAME)) {
+        if (botState.equals(BotState.ASK_ORDER_NAME)) {
             replyToUser = messagesService.getReplyMessage(chatId, "reply.askName");
-            userDataCache.setUsersCurrentBotState(userId, BotState.ASK_AGE);
+            userDataCache.setUsersCurrentBotState(userId, BotState.ASK_ORDER_PHONE);
         }
 
-        if (botState.equals(BotState.ASK_AGE)) {
-            profileData.setName(usersAnswer);
-            replyToUser = messagesService.getReplyMessage(chatId, "reply.askAge");
-            userDataCache.setUsersCurrentBotState(userId, BotState.ASK_GENDER);
-        }
-
-        if (botState.equals(BotState.ASK_GENDER)) {
-            replyToUser = messagesService.getReplyMessage(chatId, "reply.askGender");
-            profileData.setAge(Integer.parseInt(usersAnswer));
+        if (botState.equals(BotState.ASK_ORDER_PHONE)) {
+            userInfo.setPhone(usersAnswer);
+            replyToUser = messagesService.getReplyMessage(chatId, "reply.askPhone");
             userDataCache.setUsersCurrentBotState(userId, BotState.ASK_NUMBER);
         }
 
-        if (botState.equals(BotState.ASK_NUMBER)) {
-            replyToUser = messagesService.getReplyMessage(chatId, "reply.askNumber");
-            profileData.setGender(usersAnswer);
-            userDataCache.setUsersCurrentBotState(userId, BotState.ASK_COLOR);
+        if (botState.equals(BotState.ASK_ORDER_LOCATION)) {
+            userInfo.setName(usersAnswer);
+            replyToUser = messagesService.getReplyMessage(chatId, "reply.askLocation");
+            userDataCache.setUsersCurrentBotState(userId, BotState.ASK_GENDER);
         }
 
-        if (botState.equals(BotState.ASK_COLOR)) {
-            replyToUser = messagesService.getReplyMessage(chatId, "reply.askColor");
-            profileData.setNumber(Integer.parseInt(usersAnswer));
-            userDataCache.setUsersCurrentBotState(userId, BotState.ASK_MOVIE);
-        }
 
-        if (botState.equals(BotState.ASK_MOVIE)) {
-            replyToUser = messagesService.getReplyMessage(chatId, "reply.askMovie");
-            profileData.setColor(usersAnswer);
-            userDataCache.setUsersCurrentBotState(userId, BotState.ASK_SONG);
-        }
 
-        if (botState.equals(BotState.ASK_SONG)) {
-            replyToUser = messagesService.getReplyMessage(chatId, "reply.askSong");
-            profileData.setMovie(usersAnswer);
-            userDataCache.setUsersCurrentBotState(userId, BotState.PROFILE_FILLED);
-        }
 
         if (botState.equals(BotState.PROFILE_FILLED)) {
             profileData.setSong(usersAnswer);
@@ -91,8 +70,7 @@ public class FillingOrderDetails implements InputMessageHandler {
             replyToUser = new SendMessage(chatId, String.format("%s %s", "Данные по вашей анкете", profileData));
         }
 
-        userDataCache.saveUserProfileData(userId, profileData);
-
+        userDataCache.saveUserInfoCache(userId,userInfo);
         return replyToUser;
     }
 }

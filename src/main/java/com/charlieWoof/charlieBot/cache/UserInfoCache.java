@@ -12,18 +12,22 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserInfoCache {
-    int chosenCategoryId;
-    int firstIndexOfProduct;
+    private int chosenCategoryId;
+    private int firstIndexOfProduct;
+    private int lastIndexOfProduct;
+
+    private List<Product> productList;
+
+    private String name;
+    private String location;
+    private String phone;
+
 
     public UserInfoCache(int chosenCategoryId, int firstIndexOfProduct, int lastIndexOfProduct) {
         this.chosenCategoryId = chosenCategoryId;
         this.firstIndexOfProduct = firstIndexOfProduct;
         this.lastIndexOfProduct = lastIndexOfProduct;
     }
-
-    int lastIndexOfProduct;
-
-    List<Product> productList;
 
     public List<Product> getProductList() {
         if (productList==null){
