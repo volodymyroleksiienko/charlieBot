@@ -1,9 +1,15 @@
 package com.charlieWoof.charlieBot;
 
 import com.charlieWoof.charlieBot.botapi.TelegramFacade;
+import lombok.SneakyThrows;
+import org.springframework.util.ResourceUtils;
 import org.telegram.telegrambots.bots.TelegramWebhookBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+
+import java.io.File;
 
 public class CharlieWebhookBot extends TelegramWebhookBot {
     private String webHookPath;
@@ -50,5 +56,22 @@ public class CharlieWebhookBot extends TelegramWebhookBot {
 
     public void setBotToken(String botToken) {
         this.botToken = botToken;
+    }
+
+    @SneakyThrows
+    public void sendPhoto(long chatId, String imageCaption, File image) {
+        SendPhoto sendPhoto = new SendPhoto().setPhoto(image);
+        sendPhoto.setChatId(chatId);
+        sendPhoto.setCaption(imageCaption);
+        execute(sendPhoto);
+    }
+
+    @SneakyThrows
+    public void sendPhoto(long chatId, String imageCaption, File image, InlineKeyboardMarkup keyboardMarkup) {
+        SendPhoto sendPhoto = new SendPhoto().setPhoto(image);
+        sendPhoto.setChatId(chatId);
+        sendPhoto.setCaption(imageCaption);
+        sendPhoto.setReplyMarkup(keyboardMarkup);
+        execute(sendPhoto);
     }
 }

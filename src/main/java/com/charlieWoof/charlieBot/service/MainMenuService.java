@@ -45,6 +45,8 @@ public class MainMenuService {
 
         KeyboardRow  keyboardRow3 =  new KeyboardRow();
         keyboardRow3.add(new KeyboardButton().setText("Товари"));
+        keyboardRow3.add(new KeyboardButton().setText("Мій кошик"));
+        keyboardRow3.add(new KeyboardButton().setText("Мої замовлення"));
         keyboard.add(keyboardRow3);
 
         replyKeyboardMarkup.setKeyboard(keyboard);

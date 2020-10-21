@@ -13,7 +13,10 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -46,7 +49,8 @@ public class ShowProductService {
                 break;
             }
             try{
-                charlieWebhookBot.execute(configureProductMessage(chatId,products.get(i)));
+                charlieWebhookBot.sendPhoto(chatId,products.get(i).getName(),
+                        amazonClientService.downloadFileFromS3bucket("pricing2.jpg"),getInlineMessageButtons("Добавити в кошик",products.get(i)));
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -55,21 +59,17 @@ public class ShowProductService {
 
     }
 
-    private SendMessage configureProductMessage(long chatId, Product product){
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(chatId);
-        sendMessage.setText(product.getName());
-//        sendMessage.setCaption(product.getName());
-//        sendMessage.setPhoto(product.getImgUrl());
 
-        SendDocument sendPhoto = new SendDocument();
-        sendPhoto.setChatId(chatId);
-        try{
-            sendPhoto.setDocument("classpath:/img/pricingImg/pricing1.jpg");
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return sendMessage;
+    private InlineKeyboardMarkup getInlineMessageButtons(String text,Product product) {
+        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+        List <List<InlineKeyboardButton>> rowsInline = new ArrayList<List<InlineKeyboardButton>>();
+        List < InlineKeyboardButton > rowInline = new ArrayList <InlineKeyboardButton> ();
+        InlineKeyboardButton addToBucket = new InlineKeyboardButton().setText(text);
+        addToBucket.setCallbackData("addToBucket"+product.getId());
+        rowInline.add(addToBucket);
+        rowsInline.add(rowInline);
+        markupInline.setKeyboard(rowsInline);
+
+        return markupInline;
     }
-
 }
