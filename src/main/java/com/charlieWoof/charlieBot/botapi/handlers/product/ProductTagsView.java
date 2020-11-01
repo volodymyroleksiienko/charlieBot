@@ -40,12 +40,12 @@ public class ProductTagsView implements InputMessageHandler {
 
         SendMessage replyToUser = messagesService.getReplyMessage(chatId,"reply.chooseCategory");
 //        userDataCache.setUsersCurrentBotState(userId,BotState.FILLING_PROFILE);
-        replyToUser.setReplyMarkup(getInlineMessageButtons("Відкрити","https://www.charliewoof.com/kursi-grumingu"));
+        replyToUser.setReplyMarkup(getInlineMessageButtons());
 
         return replyToUser;
     }
 
-    private InlineKeyboardMarkup getInlineMessageButtons(String text, String url) {
+    private InlineKeyboardMarkup getInlineMessageButtons() {
         List<Category> categoryList = categoryService.findAll();
 
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();

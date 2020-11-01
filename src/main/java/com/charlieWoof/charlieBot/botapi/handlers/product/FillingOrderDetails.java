@@ -63,12 +63,11 @@ public class FillingOrderDetails implements InputMessageHandler {
 
 
 
-
-        if (botState.equals(BotState.PROFILE_FILLED)) {
-            profileData.setSong(usersAnswer);
-            userDataCache.setUsersCurrentBotState(userId, BotState.ASK_DESTINY);
-            replyToUser = new SendMessage(chatId, String.format("%s %s", "Данные по вашей анкете", profileData));
-        }
+//        if (botState.equals(BotState.PROFILE_FILLED)) {
+//            profileData.setSong(usersAnswer);
+//            userDataCache.setUsersCurrentBotState(userId, BotState.ASK_DESTINY);
+//            replyToUser = new SendMessage(chatId, String.format("%s %s", "Данные по вашей анкете", profileData));
+//        }
 
         userDataCache.saveUserInfoCache(userId,userInfo);
         return replyToUser;

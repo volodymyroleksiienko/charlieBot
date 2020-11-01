@@ -16,7 +16,7 @@ public class UserInfoCache {
     private int firstIndexOfProduct;
     private int lastIndexOfProduct;
 
-    private List<Product> productList;
+    private List<BucketCache> bucketList;
 
     private String name;
     private String location;
@@ -29,10 +29,14 @@ public class UserInfoCache {
         this.lastIndexOfProduct = lastIndexOfProduct;
     }
 
-    public List<Product> getProductList() {
-        if (productList==null){
-            productList = new ArrayList<>();
+    public List<BucketCache> getProductList() {
+        if (bucketList==null){
+            bucketList = new ArrayList<>();
         }
-        return productList;
+        return bucketList;
     }
+
+
 }
+
+

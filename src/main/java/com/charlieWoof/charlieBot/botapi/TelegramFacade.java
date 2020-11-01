@@ -1,6 +1,6 @@
 package com.charlieWoof.charlieBot.botapi;
 
-import com.charlieWoof.charlieBot.botapi.handlers.fillingprofile.UserProfileData;
+import com.charlieWoof.charlieBot.CharlieWebhookBot;
 import com.charlieWoof.charlieBot.cache.UserDataCache;
 import com.charlieWoof.charlieBot.cache.UserInfoCache;
 import com.charlieWoof.charlieBot.data.entity.Product;
@@ -9,18 +9,22 @@ import com.charlieWoof.charlieBot.data.service.ProductService;
 import com.charlieWoof.charlieBot.service.MainMenuService;
 import com.charlieWoof.charlieBot.service.ShowProductService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
-/**
- * @author Sergei Viacheslaev
- */
 @Component
 @Slf4j
 public class TelegramFacade {
@@ -30,15 +34,18 @@ public class TelegramFacade {
     private CategoryService categoryService;
     private ProductService productService;
     private ShowProductService showProductService;
+    private CharlieWebhookBot charlieWebhookBot;
 
     public TelegramFacade(BotStateContext botStateContext, UserDataCache userDataCache,MainMenuService mainMenuService,
-                          CategoryService categoryService, ShowProductService showProductService,ProductService productService) {
+                          CategoryService categoryService, ShowProductService showProductService,
+                          ProductService productService, @Lazy CharlieWebhookBot charlieWebhookBot) {
         this.botStateContext = botStateContext;
         this.userDataCache = userDataCache;
         this.mainMenuService = mainMenuService;
         this.categoryService = categoryService;
         this.showProductService = showProductService;
         this.productService = productService;
+        this.charlieWebhookBot = charlieWebhookBot;
     }
 
     public BotApiMethod<?> handleUpdate(Update update) {
@@ -122,11 +129,13 @@ public class TelegramFacade {
 
 
         if (buttonQuery.getData().contains("addToBucket")) {
-            int id = Integer.parseInt(buttonQuery.getData().replace("addToBucket",""));
-            Product product = productService.findById(id);
-            System.out.println(product);
-            userDataCache.getUserInfoCache(userId).getProductList().add(product);
-            System.out.println(userDataCache.getUserInfoCache(userId).getProductList());
+//            int id = Integer.parseInt(buttonQuery.getData().replace("addToBucket",""));
+//            Product product = productService.findById(id);
+//            System.out.println(product);
+//            userDataCache.getUserInfoCache(userId).getProductList().add(product);
+//            System.out.println(userDataCache.getUserInfoCache(userId).getProductList());
+
+            showProductService.handleCallbackQuery(buttonQuery);
             callBackAnswer = sendAnswerCallbackQuery("Товар додано",false,buttonQuery);
         }
 
@@ -136,14 +145,47 @@ public class TelegramFacade {
         }
         if (buttonQuery.getData().equals("toDoOrder")) {
             userDataCache.getUserInfoCache(userId).getProductList().clear();
+            InlineKeyboardMarkup replyMarkup = buttonQuery.getMessage().getReplyMarkup();
+
+            EditMessageReplyMarkup editMessageReplyMarkup = new EditMessageReplyMarkup();
+            editMessageReplyMarkup.setChatId(chatId);
+            editMessageReplyMarkup.setMessageId(buttonQuery.getMessage().getMessageId());
+            editMessageReplyMarkup.setReplyMarkup(getInlineMessageButtons());
+
+            charlieWebhookBot.updateSomeInlineMarkup(editMessageReplyMarkup);
+
             callBackAnswer = sendAnswerCallbackQuery("Корзина пуста",false,buttonQuery);
         }
 
-
+        if (buttonQuery.getData().equals("inc") || buttonQuery.getData().equals("dec") || buttonQuery.getData().equals("count")){
+            callBackAnswer = showProductService.handleCallbackQuery(buttonQuery);
+        }
 
 
         return callBackAnswer;
     }
+    private InlineKeyboardMarkup getInlineMessageButtons() {
+        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+        List <List<InlineKeyboardButton>> rowsInline = new ArrayList<List<InlineKeyboardButton>>();
+        List < InlineKeyboardButton > rowInline1 = new ArrayList <InlineKeyboardButton> ();
+        List < InlineKeyboardButton > rowInline2 = new ArrayList <InlineKeyboardButton> ();
+        InlineKeyboardButton orderBtn = new InlineKeyboardButton().setText("Оформити замовлення");
+        InlineKeyboardButton clearBtn = new InlineKeyboardButton().setText("Очистити кошикaweq");
+
+        orderBtn.setCallbackData("toDoOrder");
+        clearBtn.setCallbackData("clearBucketInfo");
+
+        rowInline1.add(orderBtn);
+        rowInline2.add(clearBtn);
+
+        rowsInline.add(rowInline1);
+        rowsInline.add(rowInline2);
+
+        markupInline.setKeyboard(rowsInline);
+
+        return markupInline;
+    }
+
 
     private AnswerCallbackQuery sendAnswerCallbackQuery(String text, boolean alert, CallbackQuery callbackquery) {
         AnswerCallbackQuery answerCallbackQuery = new AnswerCallbackQuery();

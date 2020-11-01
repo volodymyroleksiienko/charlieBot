@@ -6,8 +6,10 @@ import org.springframework.util.ResourceUtils;
 import org.telegram.telegrambots.bots.TelegramWebhookBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.File;
 
@@ -73,5 +75,13 @@ public class CharlieWebhookBot extends TelegramWebhookBot {
         sendPhoto.setCaption(imageCaption);
         sendPhoto.setReplyMarkup(keyboardMarkup);
         execute(sendPhoto);
+    }
+
+    public void updateSomeInlineMarkup(EditMessageReplyMarkup editMessageReplyMarkup){
+        try {
+            execute(editMessageReplyMarkup);
+        }catch (TelegramApiException e){
+            e.printStackTrace();
+        }
     }
 }

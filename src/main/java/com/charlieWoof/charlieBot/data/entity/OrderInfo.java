@@ -12,7 +12,6 @@ public class OrderInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     private double totalPrice;
 
 

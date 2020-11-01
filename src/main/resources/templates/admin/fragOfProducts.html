@@ -174,19 +174,29 @@
                    <div class="col-6">
                        <img th:src="${product?.imgUrl}" width="300px">
                        <label class="control-label" for="editImgUrl" style="padding-top: 7px">Img url</label>
-                       <input type="file" class="form-control" id="editImgUrl" required="required" autocomplete="off" placeholder="Не заповнено" name="file" th:value="${product?.imgUrl}">
+                       <input type="file" class="form-control" id="editImgUrl" autocomplete="off" placeholder="Не заповнено" name="file">
+                   </div>
+
+                   <div class="col-6">
+                       <label class="control-label" for="editPrice" style="padding-top: 7px">Img url</label>
+                       <input type="number" class="form-control" id="editPrice" required="required" autocomplete="off" placeholder="Не заповнено" name="price" th:value="${product?.price}">
                    </div>
 
                    <div class="col-6">
                        <label class="control-label" for="editDrugClass" style="padding-top: 7px">Категорія</label>
-                       <select class="form-control" id="editDrugClass" name="drugClass.id">
+                       <select class="form-control" id="editDrugClass" name="category.id">
                            <option th:each="category:${categoryList}" th:value="${category.id}" th:text="${category.name}" th:selected="${product?.category?.id==category.id}"></option>
                        </select>
                   </div>
 
                    <div class="col-12">
-                       <label class="col-form-label" for="mytextarea">Опис продукту</label><br>
-                       <textarea id="mytextarea" rows="20" style="width: 100%" name="description" th:text="${product?.description}"></textarea>
+                       <label class="col-form-label" for="shortDescription">Короткий опис продукту</label><br>
+                       <textarea id="shortDescription" rows="10" style="width: 100%" name="description" th:text="${product?.description}"></textarea>
+                   </div>
+
+                   <div class="col-12">
+                       <label class="col-form-label" for="fullDescription">Повний опис продукту</label><br>
+                       <textarea id="fullDescription" rows="20" style="width: 100%" name="fullDescription" th:text="${product?.fullDescription}"></textarea>
                    </div>
                </div>
                <div class="col-12">

@@ -30,20 +30,21 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void save(Product product) {
-        Product productDB = productJPA.getOne(product.getId());
+        if (product.getId()!=0) {
+            Product productDB = productJPA.getOne(product.getId());
 
-        if(productDB.getCategory()!=null){
-            Category category = categoryService.findById(productDB.getCategory().getId());
-            category.getProductList().remove(productDB);
-            categoryService.save(category);
+            if (productDB.getCategory() != null) {
+                Category category = categoryService.findById(productDB.getCategory().getId());
+                category.getProductList().remove(productDB);
+                categoryService.save(category);
+            }
+
+            if (product.getCategory() != null) {
+                Category category = categoryService.findById(product.getCategory().getId());
+                category.getProductList().add(product);
+                categoryService.save(category);
+            }
         }
-
-        if(product.getCategory()!=null){
-            Category category = categoryService.findById(product.getCategory().getId());
-            category.getProductList().add(product);
-            categoryService.save(category);
-        }
-
         productJPA.save(product);
     }
 

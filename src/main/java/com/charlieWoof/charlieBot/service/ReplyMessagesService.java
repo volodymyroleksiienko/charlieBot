@@ -17,7 +17,7 @@ public class ReplyMessagesService {
     }
 
     public SendMessage getReplyMessage(long chatId, String replyMessage) {
-        return new SendMessage(chatId, localeMessageService.getMessage(replyMessage));
+        return new SendMessage(chatId, localeMessageService.getMessage(replyMessage)).setParseMode("html");
     }
 
     public SendMessage getReplyMessage(long chatId, String replyMessage, Object... args) {

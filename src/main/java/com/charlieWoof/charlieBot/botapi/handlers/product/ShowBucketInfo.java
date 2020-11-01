@@ -2,6 +2,7 @@ package com.charlieWoof.charlieBot.botapi.handlers.product;
 
 import com.charlieWoof.charlieBot.botapi.BotState;
 import com.charlieWoof.charlieBot.botapi.InputMessageHandler;
+import com.charlieWoof.charlieBot.cache.BucketCache;
 import com.charlieWoof.charlieBot.cache.UserDataCache;
 import com.charlieWoof.charlieBot.data.entity.Product;
 import com.charlieWoof.charlieBot.service.ReplyMessagesService;
@@ -39,18 +40,27 @@ public class ShowBucketInfo implements InputMessageHandler {
         int userId = inputMsg.getFrom().getId();
         long chatId = inputMsg.getChatId();
         System.out.println(userId);
-        List<Product> productList = userDataCache.getUserInfoCache(userId).getProductList();
+        List<BucketCache> productList = userDataCache.getUserInfoCache(userId).getProductList();
         SendMessage replyToUser;
         if(productList.size()==0){
-            replyToUser = messagesService.getReplyMessage(chatId,"reply.askSignUp");
+            replyToUser = messagesService.getReplyMessage(chatId,"reply.emptyBucket");
         }else {
             replyToUser = new SendMessage();
             replyToUser.setChatId(chatId);
 
-            String text="";
-            for (Product product:productList) {
-                text +="\n"+product.getName();
+            double sumOfProductPrice = 0;
+
+            String text="У вашій корзині: \n\n";
+            for (BucketCache bucket:productList) {
+                Product product = bucket.getProduct();
+                sumOfProductPrice+=product.getPrice();
+                text +=product.getName()+
+                " <b>"+product.getPrice() + " * " + bucket.getCount() + " = " +
+                        (product.getPrice()*bucket.getCount()) + "</b>\n";
+
             }
+
+            text+="\nPазом: " + sumOfProductPrice;
             replyToUser.setText(text);
             replyToUser.setReplyMarkup(getInlineMessageButtons());
         }
