@@ -12,6 +12,7 @@ public class UserOrderDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int userId;
+    private long chatId;
 
     private String phone;
     private String location;
