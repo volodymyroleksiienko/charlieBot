@@ -29,6 +29,7 @@ public class FillingProfileHandler implements InputMessageHandler {
     @Override
     public SendMessage handle(Message message) {
         if (userDataCache.getUsersCurrentBotState(message.getFrom().getId()).equals(BotState.FILLING_PROFILE)) {
+            System.out.println("fill profile");
             userDataCache.setUsersCurrentBotState(message.getFrom().getId(), BotState.ASK_NAME);
         }
         return processUsersInput(message);

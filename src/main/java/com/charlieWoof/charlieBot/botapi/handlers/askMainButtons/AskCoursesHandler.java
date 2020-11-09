@@ -4,6 +4,7 @@ import com.charlieWoof.charlieBot.botapi.BotState;
 import com.charlieWoof.charlieBot.botapi.InputMessageHandler;
 import com.charlieWoof.charlieBot.cache.UserDataCache;
 import com.charlieWoof.charlieBot.service.ReplyMessagesService;
+import com.charlieWoof.charlieBot.utils.Emojis;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -38,9 +39,13 @@ public class AskCoursesHandler implements InputMessageHandler {
         int userId = inputMsg.getFrom().getId();
         long chatId = inputMsg.getChatId();
 
-        SendMessage replyToUser = messagesService.getReplyMessage(chatId,"reply.askCourses");
+        SendMessage replyToUser = messagesService.getReplyMessage(chatId,"reply.askCourses",Emojis.PAW,Emojis.BLUSH_FACE,Emojis.BLACK_SMALL_SQUARE);
+
+//        SendMessage replyToUser = messagesService.getReplyMessage(chatId,"reply.askCourses");
 //        userDataCache.setUsersCurrentBotState(userId,BotState.FILLING_PROFILE);
-        replyToUser.setReplyMarkup(getInlineMessageButtons("Відкрити","https://www.charliewoof.com/kursi-grumingu"));
+        replyToUser.setParseMode("html");
+        replyToUser.setReplyMarkup(getInlineMessageButtons("Програма курсів","https://www.charliewoof.com/kursi-grumingu"));
+//        replyToUser.setReplyMarkup(getInlineMessageButtons("Відкрити","+380639920810"));
 
         return replyToUser;
     }

@@ -97,13 +97,14 @@ public class TelegramFacade {
                 botState = BotState.SHOW_BUCKET_INFO;
                 break;
             case "Мої замовлення":
-                botState = BotState.SHOW_ORDERS;
+                botState = BotState.START;
                 break;
             default:
                 botState = userDataCache.getUsersCurrentBotState(userId);
                 break;
         }
 
+        System.out.println(botState.toString());
         userDataCache.setUsersCurrentBotState(userId, botState);
 
         replyMessage = botStateContext.processInputMessage(botState, message);
@@ -143,19 +144,10 @@ public class TelegramFacade {
             userDataCache.getUserInfoCache(userId).getProductList().clear();
             callBackAnswer = sendAnswerCallbackQuery("Корзина пуста",false,buttonQuery);
         }
-        if (buttonQuery.getData().equals("toDoOrder")) {
-            userDataCache.getUserInfoCache(userId).getProductList().clear();
-            InlineKeyboardMarkup replyMarkup = buttonQuery.getMessage().getReplyMarkup();
-
-            EditMessageReplyMarkup editMessageReplyMarkup = new EditMessageReplyMarkup();
-            editMessageReplyMarkup.setChatId(chatId);
-            editMessageReplyMarkup.setMessageId(buttonQuery.getMessage().getMessageId());
-            editMessageReplyMarkup.setReplyMarkup(getInlineMessageButtons());
-
-            charlieWebhookBot.updateSomeInlineMarkup(editMessageReplyMarkup);
-
-            callBackAnswer = sendAnswerCallbackQuery("Корзина пуста",false,buttonQuery);
-        }
+//        if (buttonQuery.getData().equals("toDoOrder")) {
+//            userDataCache.setUsersCurrentBotState(userId, BotState.FILLING_PROFILE);
+//            handleInputMessage(buttonQuery.getMessage());
+//        }
 
         if (buttonQuery.getData().equals("inc") || buttonQuery.getData().equals("dec") || buttonQuery.getData().equals("count")){
             callBackAnswer = showProductService.handleCallbackQuery(buttonQuery);

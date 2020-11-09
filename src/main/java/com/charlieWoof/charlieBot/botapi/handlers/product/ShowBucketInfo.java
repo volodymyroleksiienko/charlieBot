@@ -53,7 +53,7 @@ public class ShowBucketInfo implements InputMessageHandler {
             String text="У вашій корзині: \n\n";
             for (BucketCache bucket:productList) {
                 Product product = bucket.getProduct();
-                sumOfProductPrice+=product.getPrice();
+                sumOfProductPrice+=product.getPrice() * bucket.getCount();
                 text +=product.getName()+
                 " <b>"+product.getPrice() + " * " + bucket.getCount() + " = " +
                         (product.getPrice()*bucket.getCount()) + "</b>\n";
@@ -62,6 +62,7 @@ public class ShowBucketInfo implements InputMessageHandler {
 
             text+="\nPазом: " + sumOfProductPrice;
             replyToUser.setText(text);
+            replyToUser.setParseMode("html");
             replyToUser.setReplyMarkup(getInlineMessageButtons());
         }
 

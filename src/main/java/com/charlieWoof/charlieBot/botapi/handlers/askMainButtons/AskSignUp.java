@@ -4,6 +4,7 @@ import com.charlieWoof.charlieBot.botapi.BotState;
 import com.charlieWoof.charlieBot.botapi.InputMessageHandler;
 import com.charlieWoof.charlieBot.cache.UserDataCache;
 import com.charlieWoof.charlieBot.service.ReplyMessagesService;
+import com.charlieWoof.charlieBot.utils.Emojis;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -38,9 +39,9 @@ public class AskSignUp implements InputMessageHandler {
         int userId = inputMsg.getFrom().getId();
         long chatId = inputMsg.getChatId();
 
-        SendMessage replyToUser = messagesService.getReplyMessage(chatId,"reply.askSignUp");
+        SendMessage replyToUser = messagesService.getReplyMessage(chatId,"reply.askSignUp", Emojis.POODLE);
 //        userDataCache.setUsersCurrentBotState(userId,BotState.FILLING_PROFILE);
-        replyToUser.setReplyMarkup(getInlineMessageButtons("Відкрити","https://n405948.yclients.com/company:147143"));
+        replyToUser.setReplyMarkup(getInlineMessageButtons("Записатись","https://n405948.yclients.com/company:147143"));
 
         return replyToUser;
     }

@@ -43,11 +43,11 @@ public class MainMenuService {
         keyboardRow2.add(new KeyboardButton().setText("Курси грумінгу"));
         keyboard.add(keyboardRow2);
 
-        KeyboardRow  keyboardRow3 =  new KeyboardRow();
-        keyboardRow3.add(new KeyboardButton().setText("Товари"));
-        keyboardRow3.add(new KeyboardButton().setText("Мій кошик"));
-        keyboardRow3.add(new KeyboardButton().setText("Мої замовлення"));
-        keyboard.add(keyboardRow3);
+//        KeyboardRow  keyboardRow3 =  new KeyboardRow();
+//        keyboardRow3.add(new KeyboardButton().setText("Товари"));
+//        keyboardRow3.add(new KeyboardButton().setText("Мій кошик"));
+//        keyboardRow3.add(new KeyboardButton().setText("Мої замовлення"));
+//        keyboard.add(keyboardRow3);
 
         replyKeyboardMarkup.setKeyboard(keyboard);
         return replyKeyboardMarkup;

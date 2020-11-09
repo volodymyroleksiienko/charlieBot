@@ -90,7 +90,18 @@ public class ShowProductService {
             int id = Integer.parseInt(buttonQuery.getData().replace("addToBucket",""));
             Product product = productService.findById(id);
             System.out.println(product);
-            userDataCache.getUserInfoCache(userId).getProductList().add(new BucketCache(count,product));
+            List<BucketCache> bucketCache = userDataCache.getUserInfoCache(userId).getProductList();
+            boolean addMarker = true;
+            for(BucketCache bucket:bucketCache){
+                if(bucket.getProduct().getId()==product.getId()){
+                    bucket.setCount(bucket.getCount()+count);
+                    addMarker = false;
+                    break;
+                }
+            }
+            if(addMarker){
+                userDataCache.getUserInfoCache(userId).getProductList().add(new BucketCache(count,product));
+            }
             System.out.println(userDataCache.getUserInfoCache(userId).getProductList());
         }
 

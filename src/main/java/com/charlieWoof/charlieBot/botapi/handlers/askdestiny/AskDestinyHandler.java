@@ -5,6 +5,7 @@ import com.charlieWoof.charlieBot.botapi.InputMessageHandler;
 import com.charlieWoof.charlieBot.cache.UserDataCache;
 import com.charlieWoof.charlieBot.service.MainMenuService;
 import com.charlieWoof.charlieBot.service.ReplyMessagesService;
+import com.charlieWoof.charlieBot.utils.Emojis;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -29,7 +30,7 @@ public class AskDestinyHandler implements InputMessageHandler {
 
     @Override
     public SendMessage handle(Message message) {
-        return mainMenuService.getMainMenuMessage(message.getChatId(), messagesService.getReplyText("reply.showMainMenu"));
+        return mainMenuService.getMainMenuMessage(message.getChatId(), messagesService.getReplyText("reply.showMainMenu", Emojis.DOG,Emojis.CAT,Emojis.WINK_FACE));
     }
 
     @Override

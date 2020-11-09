@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.charlieWoof</groupId>
 	<artifactId>charlieBot</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0</version>
 	<packaging>war</packaging>
 	<name>charlieBot</name>
 	<description>charlieBot</description>
@@ -89,6 +89,12 @@
 			<artifactId>aws-java-sdk</artifactId>
 			<version>1.11.163</version>
 		</dependency>
+		<dependency>
+			<groupId>com.vdurmont</groupId>
+			<artifactId>emoji-java</artifactId>
+			<version>5.1.1</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -96,6 +102,29 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<!--Create loader jar file-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>com.charlieWoof</groupId>
+									<artifactId>charlieBot</artifactId>
+									<version>1.0</version>
+									<destFileName>project.jar</destFileName>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
