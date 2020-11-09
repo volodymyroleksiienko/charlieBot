@@ -41,7 +41,7 @@ public class AskWebsite implements InputMessageHandler {
 
         SendMessage replyToUser = messagesService.getReplyMessage(chatId,"reply.askWebsite", Emojis.PAW,Emojis.WINK_FACE);
 //        userDataCache.setUsersCurrentBotState(userId,BotState.FILLING_PROFILE);
-        replyToUser.setReplyMarkup(getInlineMessageButtons("Посилання","https://www.charliewoof.com/kursi-grumingu"));
+        replyToUser.setReplyMarkup(getInlineMessageButtons("Посилання","https://www.charliewoof.com/"));
 
         return replyToUser;
     }
